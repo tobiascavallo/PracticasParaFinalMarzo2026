@@ -42,7 +42,7 @@ func (i *AvionRepository) InsertarAvion(model model.Avion) (*mongo.InsertOneResu
 func (i *AvionRepository) ModificarAvion(avion model.Avion) (*mongo.UpdateResult, error) {
 	collection := i.respository.GetClient().Database("CrudAviones").Collection("aviones")
 
-	filtro := bson.M{"id": avion.ID}
+	filtro := bson.M{"_id": avion.ID}
 	actualizacion := bson.M{"$set": bson.M{
 		"nombre":             avion.Nombre,
 		"modelo":             avion.Modelo,
@@ -60,7 +60,7 @@ func (i *AvionRepository) ModificarAvion(avion model.Avion) (*mongo.UpdateResult
 func (i *AvionRepository) ObtenerAvionPorID(id primitive.ObjectID) (model.Avion, error) {
 	collection := i.respository.GetClient().Database("CrudAviones").Collection("aviones")
 
-	filtro := bson.M{"id": id}
+	filtro := bson.M{"_id": id}
 	var avion model.Avion
 
 	err := collection.FindOne(context.TODO(), filtro).Decode(&avion)
@@ -98,7 +98,7 @@ func (i *AvionRepository) ObtenerAviones(nombre string) ([]model.Avion, error) {
 func (r *AvionRepository) EliminarAvion(id primitive.ObjectID) (*mongo.DeleteResult, error) {
 	collection := r.respository.GetClient().Database("CrudAviones").Collection("aviones")
 
-	filtro := bson.M{"id": id}
+	filtro := bson.M{"_id": id}
 	result, err := collection.DeleteOne(context.TODO(), filtro)
 
 	return result, err
